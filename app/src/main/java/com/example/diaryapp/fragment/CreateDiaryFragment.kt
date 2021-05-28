@@ -20,8 +20,6 @@ class CreateDiaryFragment : BaseFragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_create_diary, container, false)
     }
-    git config --global user.name "thanhdatt31"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         diaryId = requireArguments().getInt("diaryId",-1)
