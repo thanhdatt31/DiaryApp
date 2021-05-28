@@ -12,14 +12,14 @@ interface DiaryDao {
     suspend fun getSpecificDiary(id: Int): Diary
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNotes(diary: Diary)
+    suspend fun insertDiary(diary: Diary)
 
     @Delete
     suspend fun deleteNote(diary: Diary)
 
     @Query("DELETE FROM diary WHERE id =:id")
-    suspend fun deleteSpecificNote(id: Int)
+    suspend fun deleteSpecificDiary(id: Int)
 
     @Update
-    suspend fun updateNote(diary: Diary)
+    suspend fun updateDiary(diary: Diary)
 }

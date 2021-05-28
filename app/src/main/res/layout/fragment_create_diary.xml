@@ -18,7 +18,7 @@
         android:id="@+id/ic_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:src="@drawable/ic_baseline_arrow_back_ios_24"
         app:layout_constraintBottom_toBottomOf="@id/view_tb"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -28,17 +28,37 @@
         android:id="@+id/ic_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
         android:src="@drawable/ic_baseline_done_24"
         app:layout_constraintBottom_toBottomOf="@id/view_tb"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/view_tb" />
 
+    <TextView
+        android:id="@+id/tvDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:textColor="@color/ColorGray"
+        android:textColorHint="@color/ColorGray"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_title" />
+
     <EditText
         android:id="@+id/edt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@null"
         android:ellipsize="end"
         android:hint="Diary's Title"
@@ -56,20 +76,23 @@
         android:id="@+id/bg_edt"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/background_home"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_title" />
+        app:layout_constraintTop_toBottomOf="@id/tvDateTime" />
 
     <EditText
         android:id="@+id/edt_desc"
-        android:background="@null"
         android:layout_width="0dp"
-        android:padding="6dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/bg_edt"
+        android:background="@null"
+        android:padding="6dp"
         app:layout_constraintLeft_toLeftOf="@id/bg_edt"
-        app:layout_constraintRight_toRightOf="@id/bg_edt"/>
+        app:layout_constraintRight_toRightOf="@id/bg_edt"
+        app:layout_constraintTop_toTopOf="@id/bg_edt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

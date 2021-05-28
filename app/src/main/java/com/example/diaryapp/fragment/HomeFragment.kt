@@ -1,25 +1,26 @@
 package com.example.diaryapp.fragment
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diaryapp.BaseFragment
 import com.example.diaryapp.R
+import com.example.diaryapp.SwipeToDel
 import com.example.diaryapp.adapter.DiaryAdapter
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment() {
@@ -36,6 +37,8 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+
         recyclerView = recycler_view
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager =
@@ -46,10 +49,17 @@ class HomeFragment : BaseFragment() {
             diaryAdapter.setData(diary)
             listDiary = diary as ArrayList<Diary>
             recyclerView.adapter = diaryAdapter
+        }
+
+        diaryAdapter.setOnClickListener(onClicked)
+        val swipeDelete = object : SwipeToDel() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                diaryAdapter.delItem(viewHolder.adapterPosition)
+            }
 
         }
-        diaryAdapter.setOnClickListener(onClicked)
-
+        val touchHelper = ItemTouchHelper(swipeDelete)
+        touchHelper.attachToRecyclerView(recyclerView)
         //
         fabBtnCreateDiary.setOnClickListener {
             replaceFragment(CreateDiaryFragment.newInstance())
@@ -96,5 +106,21 @@ class HomeFragment : BaseFragment() {
         fragmentTransition.replace(R.id.frame_layout, fragment).addToBackStack("").commit()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar, menu)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.calendar -> {
+                Toast.makeText(context, "Alo", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
