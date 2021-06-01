@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var dayOfMonth: TextView = itemView.findViewById(R.id.cellDayText)
+        var bg : ImageView = itemView.findViewById(R.id.img_bg)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,13 +48,13 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
                 val listDiaryByDate = DiaryDatabase.getDatabase(context).diaryDao()
                     .getDiaryByTime(date) as ArrayList<Diary>
                 if (listDiaryByDate.size > 0) {
-                    holder.dayOfMonth.setTextColor(Color.parseColor("#F40606"))
+                    holder.bg.visibility = View.VISIBLE
                     holder.dayOfMonth.setOnClickListener {
-                        listener!!.onClicked(calendar)
+
                     }
                 } else {
                     holder.dayOfMonth.setOnClickListener {
-                        Toast.makeText(context, "${calendar.day}", Toast.LENGTH_SHORT).show()
+                        listener!!.onClicked(calendar)
                     }
                 }
             }

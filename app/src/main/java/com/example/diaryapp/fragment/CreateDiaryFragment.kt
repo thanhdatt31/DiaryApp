@@ -1,6 +1,7 @@
 package com.example.diaryapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import java.util.*
 
 class CreateDiaryFragment : BaseFragment() {
     private var diaryId = -1
+    private var dateTime = ""
+    private lateinit var currentDate: LocalDate
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,15 +31,29 @@ class CreateDiaryFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         diaryId = requireArguments().getInt("diaryId", -1)
+        dateTime = requireArguments().getString("date_time", "null").toString()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (dateTime != "null") {
+            val formatter = DateTimeFormatter.ofPattern("d M, yyyy", Locale.ENGLISH)
+            val date: LocalDate = LocalDate.parse(dateTime, formatter)
+            val dateOfDiary =
+                date.dayOfMonth.toString() + "/" + date.monthValue + "/" + date.year
+            tvDateTime.text = dateOfDiary
+            currentDate = date
+        } else {
+            currentDate = LocalDate.now()
+            val dateOfDiary =
+                currentDate.dayOfMonth.toString() + "/" + currentDate.monthValue + "/" + currentDate.year
+            tvDateTime.text = dateOfDiary
+        }
         if (diaryId != -1) {
             GlobalScope.launch {
                 val diary = DiaryDatabase.getDatabase(requireContext()).diaryDao()
                     .getSpecificDiary(diaryId)
-                val formatter = DateTimeFormatter.ofPattern("dd M, yyyy", Locale.ENGLISH)
+                val formatter = DateTimeFormatter.ofPattern("d M, yyyy", Locale.ENGLISH)
                 val date: LocalDate = LocalDate.parse(diary.dateTime, formatter)
                 val dateOfDiary =
                     date.dayOfMonth.toString() + "/" + date.monthValue + "/" + date.year
@@ -69,7 +86,6 @@ class CreateDiaryFragment : BaseFragment() {
                 val diary = Diary()
                 diary.title = edt_title.text.toString()
                 diary.diaryText = edt_desc.text.toString()
-                val currentDate = LocalDate.now()
                 val dateOfDiary =
                     currentDate.dayOfMonth.toString() + " " + currentDate.monthValue + ", " + currentDate.year
                 diary.dateTime = dateOfDiary

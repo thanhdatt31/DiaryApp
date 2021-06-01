@@ -9,15 +9,25 @@
         android:id="@+id/cellDayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+
         android:fontFamily="@font/lato_light"
         android:text="1"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25" />
+    <ImageView
+        android:id="@+id/img_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:src="@drawable/bg_item_calendar"
+        app:layout_constraintTop_toTopOf="@id/cellDayText"
+        app:layout_constraintBottom_toBottomOf="@id/cellDayText"
+        app:layout_constraintLeft_toLeftOf="@id/cellDayText"
+        app:layout_constraintRight_toRightOf="@id/cellDayText"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

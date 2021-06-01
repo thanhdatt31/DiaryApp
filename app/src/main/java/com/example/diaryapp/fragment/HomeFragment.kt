@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
+        recyclerView.adapter = diaryAdapter
         GlobalScope.launch {
             val diary = DiaryDatabase.getDatabase(requireContext()).diaryDao().getAllDiary()
             diaryAdapter.setData(diary)

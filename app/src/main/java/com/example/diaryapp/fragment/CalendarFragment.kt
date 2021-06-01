@@ -38,8 +38,6 @@ class CalendarFragment : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         recyclerView = view.recycler_view_calendar
         recyclerView.apply {
             view.tv_month_title.text = monthYearFromDate(selectedDate)
@@ -57,6 +55,12 @@ class CalendarFragment : BottomSheetDialogFragment() {
         }
         ic_forward.setOnClickListener {
             selectedDate = selectedDate.plusMonths(1)
+            view.tv_month_title.text = monthYearFromDate(selectedDate)
+            val listDay = daysInMonthArray(selectedDate)
+            calendarAdapter.setData(listDay)
+        }
+        ic_home.setOnClickListener {
+            selectedDate = LocalDate.now()
             view.tv_month_title.text = monthYearFromDate(selectedDate)
             val listDay = daysInMonthArray(selectedDate)
             calendarAdapter.setData(listDay)
@@ -88,20 +92,30 @@ class CalendarFragment : BottomSheetDialogFragment() {
         }
         return daysInMonthArray
     }
-    private val onClicked = object : CalendarAdapter.OnItemClickListener{
+
+    private val onClicked = object : CalendarAdapter.OnItemClickListener {
         override fun onClicked(calendar: Calendar) {
             dismiss()
+            val dateTime: String = calendar.day.toString() + " " +
+                    calendar.month + ", " + calendar.year
+            val fragment: Fragment = CreateDiaryFragment()
+            val bundle = Bundle()
+            bundle.putString("date_time", dateTime)
+            fragment.arguments = bundle
+            replaceFragment(fragment)
         }
 
 
     }
+
     private fun monthYearFromDate(date: LocalDate): String {
         val formatter = DateTimeFormatter.ofPattern("MMMM, yyyy")
         return date.format(formatter)
     }
-//    private fun getDiaryByDate(data: String): ArrayList<Diary> {
-//        var listDiaryByDate = arrayListOf<Diary>()
-//
-//        return listDiaryByDate
-//    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentTransition = requireActivity().supportFragmentManager.beginTransaction()
+        fragmentTransition.replace(R.id.frame_layout, fragment).addToBackStack("").commit()
+    }
+
 }
