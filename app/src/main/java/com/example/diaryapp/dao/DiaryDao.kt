@@ -22,4 +22,9 @@ interface DiaryDao {
 
     @Update
     suspend fun updateDiary(diary: Diary)
+
+    @Query("SElECT * FROM diary where date_time = :date")
+    suspend fun getDiaryByTime(date: String): List<Diary>
+
+
 }

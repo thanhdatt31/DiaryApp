@@ -15,6 +15,7 @@ import com.example.diaryapp.SwipeToDel
 import com.example.diaryapp.adapter.DiaryAdapter
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -118,7 +119,8 @@ class HomeFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.calendar -> {
-                Toast.makeText(context, "Alo", Toast.LENGTH_SHORT).show()
+                val calendarFragment = CalendarFragment()
+                calendarFragment.show(childFragmentManager,"")
             }
         }
         return super.onOptionsItemSelected(item)

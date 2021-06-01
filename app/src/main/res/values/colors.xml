@@ -25,4 +25,5 @@
     <color name="ColorGreenNote">#0aebaf</color>
     <color name="ColorOrangeNote">#ff7746</color>
     <color name="ColorBlackNote">#202734</color>
+    <color name="gray">#888</color>
 </resources>

@@ -18,4 +18,5 @@ class Diary : Serializable {
 
     @ColumnInfo(name = "diary_text")
     var diaryText: String? = null
+
 }
