@@ -19,7 +19,7 @@ import java.util.*
 
 class CreateDiaryFragment : BaseFragment() {
     private var diaryId = -1
-    private var dateTime = ""
+    private var dateTime = "null"
     private lateinit var currentDate: LocalDate
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

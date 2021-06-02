@@ -1,9 +1,11 @@
 package com.example.diaryapp.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -22,6 +24,10 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     private var listCalendar: ArrayList<Calendar> = arrayListOf()
     var listener: OnItemClickListener? = null
     private lateinit var context: Context
+    private var clickCount = 0
+    private var startTime: Long = 0
+    private var duration: Long = 0
+    private val MAX_DURATION = 500
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var dayOfMonth: TextView = itemView.findViewById(R.id.cellDayText)
@@ -35,6 +41,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
         return ViewHolder(view)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val calendar: Calendar = listCalendar[position]
         if (calendar.day == 0) {
@@ -49,9 +56,11 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
                     .getDiaryByTime(date) as ArrayList<Diary>
                 if (listDiaryByDate.size > 0) {
                     holder.bg.visibility = View.VISIBLE
-                    holder.dayOfMonth.setOnClickListener {
-
+                    holder.bg.setOnTouchListener { v, event ->
+                     onDoubleClick(event)
+                        true
                     }
+
                 } else {
                     holder.dayOfMonth.setOnClickListener {
                         listener!!.onClicked(calendar)
@@ -59,6 +68,27 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
                 }
             }
 
+        }
+
+    }
+
+    private fun onDoubleClick(event: MotionEvent) {
+        when (event.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_DOWN -> {
+                startTime = System.currentTimeMillis()
+                clickCount++
+            }
+            MotionEvent.ACTION_UP -> {
+                val time = System.currentTimeMillis() - startTime
+                duration += time
+                if (clickCount == 2) {
+                    if (duration <= MAX_DURATION) {
+                        Log.d("datnt", "onDoubleClick: ")
+                    }
+                    clickCount = 0
+                    duration = 0
+                }
+            }
         }
 
     }
