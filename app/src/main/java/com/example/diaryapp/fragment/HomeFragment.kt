@@ -1,9 +1,9 @@
 package com.example.diaryapp.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diaryapp.BaseFragment
 import com.example.diaryapp.R
+import com.example.diaryapp.SettingsActivity
 import com.example.diaryapp.SwipeToDel
 import com.example.diaryapp.adapter.DiaryAdapter
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -120,7 +120,11 @@ class HomeFragment : BaseFragment() {
         when (item.itemId) {
             R.id.calendar -> {
                 val calendarFragment = CalendarFragment()
-                calendarFragment.show(childFragmentManager,"")
+                calendarFragment.show(childFragmentManager, "")
+            }
+            R.id.setting -> {
+                val intent = Intent(requireContext(), SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
