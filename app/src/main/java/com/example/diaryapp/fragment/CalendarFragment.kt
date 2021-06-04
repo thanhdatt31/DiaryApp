@@ -1,25 +1,20 @@
 package com.example.diaryapp.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diaryapp.R
 import com.example.diaryapp.adapter.CalendarAdapter
-import com.example.diaryapp.adapter.DiaryAdapter
-import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Calendar
-import com.example.diaryapp.model.Diary
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -29,11 +24,13 @@ class CalendarFragment : BottomSheetDialogFragment() {
     private lateinit var recyclerView: RecyclerView
     private var calendarAdapter = CalendarAdapter()
     private var selectedDate: LocalDate = LocalDate.now()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
@@ -95,6 +92,16 @@ class CalendarFragment : BottomSheetDialogFragment() {
 
     private val onClicked = object : CalendarAdapter.OnItemClickListener {
         override fun onClicked(calendar: Calendar) {
+            val intent = Intent("calendar")
+            val date: String = calendar.day.toString() + "/" + calendar.month + "/" + calendar.year
+            intent.putExtra("date", date)
+            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(
+                intent
+            )
+            dismiss()
+        }
+
+        override fun onDoubleClick(calendar: Calendar) {
             dismiss()
             val dateTime: String = calendar.day.toString() + " " +
                     calendar.month + ", " + calendar.year

@@ -1,11 +1,15 @@
 package com.example.diaryapp.fragment
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,12 +78,20 @@ class HomeFragment : BaseFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val listDiaryTemp: ArrayList<Diary> = arrayListOf()
+                var new: List<String> = arrayListOf()
+                if (newText!!.length >= 3) {
+                    new = newText.toString().split("/")
+                }
                 for (diary in listDiary) {
                     if (diary.title!!.lowercase(Locale.getDefault()).contains(newText.toString()) ||
                         diary.diaryText!!.lowercase(Locale.getDefault())
                             .contains(newText.toString())
                     ) {
                         listDiaryTemp.add(diary)
+                    } else if (newText.length >= 3) {
+                        if (diary.dateTime!!.contains(new[0]) && diary.dateTime!!.contains(new[1])) {
+                            listDiaryTemp.add(diary)
+                        }
                     }
                 }
                 diaryAdapter.setData(listDiaryTemp)
@@ -88,6 +100,10 @@ class HomeFragment : BaseFragment() {
             }
 
         })
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            broadcastReceiver, IntentFilter("calendar")
+        )
+
 
     }
 
@@ -128,5 +144,25 @@ class HomeFragment : BaseFragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val date = intent?.getStringExtra("date")
+            searchView.setQuery(date, false)
+        }
+
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+            broadcastReceiver, IntentFilter("calendar")
+        )
+        super.onResume()
     }
 }

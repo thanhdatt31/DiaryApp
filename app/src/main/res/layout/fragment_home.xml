@@ -33,14 +33,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/background_searchbox"
-        android:iconifiedByDefault="false"
         android:queryHint="Search Diary"
+        android:iconifiedByDefault="true"
         android:searchIcon="@drawable/ic_baseline_search_24"
         android:theme="@style/ThemeOverlay.search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv1" />
-
+<!--    android:iconifiedByDefault="false"-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

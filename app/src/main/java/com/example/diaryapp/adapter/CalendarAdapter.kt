@@ -2,15 +2,12 @@ package com.example.diaryapp.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diaryapp.R
 import com.example.diaryapp.database.DiaryDatabase
@@ -31,7 +28,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var dayOfMonth: TextView = itemView.findViewById(R.id.cellDayText)
-        var bg : ImageView = itemView.findViewById(R.id.img_bg)
+        var bg: ImageView = itemView.findViewById(R.id.img_bg)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,13 +54,18 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
                 if (listDiaryByDate.size > 0) {
                     holder.bg.visibility = View.VISIBLE
                     holder.bg.setOnTouchListener { v, event ->
-                     onDoubleClick(event)
-                        true
+                        onDoubleClick(event, calendar)
+                        false
+                    }
+                    holder.bg.setOnLongClickListener {
+                        listener!!.onClicked(calendar)
+                        false
                     }
 
                 } else {
-                    holder.dayOfMonth.setOnClickListener {
-                        listener!!.onClicked(calendar)
+                    holder.dayOfMonth.setOnTouchListener { v, event ->
+                        onDoubleClick(event, calendar)
+                        true
                     }
                 }
             }
@@ -72,7 +74,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     }
 
-    private fun onDoubleClick(event: MotionEvent) {
+    private fun onDoubleClick(event: MotionEvent, calendar: Calendar) {
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_DOWN -> {
                 startTime = System.currentTimeMillis()
@@ -83,7 +85,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
                 duration += time
                 if (clickCount == 2) {
                     if (duration <= MAX_DURATION) {
-                        Log.d("datnt", "onDoubleClick: ")
+                        listener!!.onDoubleClick(calendar)
                     }
                     clickCount = 0
                     duration = 0
@@ -108,6 +110,7 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
         fun onClicked(calendar: Calendar)
+        fun onDoubleClick(calendar: Calendar)
     }
 
 
