@@ -43,8 +43,6 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
         val calendar: Calendar = listCalendar[position]
         if (calendar.day == 0) {
             holder.dayOfMonth.text = ""
-            holder.itemView.setOnClickListener {
-            }
         } else {
             holder.dayOfMonth.text = calendar.day.toString()
             val date: String = calendar.day.toString() + " " + calendar.month + ", " + calendar.year

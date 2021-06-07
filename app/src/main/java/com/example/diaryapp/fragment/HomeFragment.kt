@@ -23,6 +23,7 @@ import com.example.diaryapp.model.Diary
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -49,7 +50,7 @@ class HomeFragment : BaseFragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = diaryAdapter
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             val diary = DiaryDatabase.getDatabase(requireContext()).diaryDao().getAllDiary()
             diaryAdapter.setData(diary)
             listDiary = diary as ArrayList<Diary>
