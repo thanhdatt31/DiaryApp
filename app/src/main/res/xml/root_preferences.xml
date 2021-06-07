@@ -16,12 +16,5 @@
             app:title="Set Up Your Pin" />
 
     </PreferenceCategory>
-    <PreferenceCategory app:title="Backup/Restore" >
-        <Preference
-            app:key="backup"
-            app:title="Backup your diary"/>
-        <Preference
-            app:key="restore"
-            app:title="Restore your diary"/>
-    </PreferenceCategory>
+
 </PreferenceScreen>

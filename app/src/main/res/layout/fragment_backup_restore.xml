@@ -20,15 +20,27 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <ImageView
+            android:id="@+id/ic_backup"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/ic_baseline_backup_24_dark"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.15"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_black"
+            android:text="Backup"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="@id/ic_backup"
+            app:layout_constraintRight_toRightOf="@id/ic_backup"
+            app:layout_constraintTop_toBottomOf="@id/ic_backup" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,16 +56,48 @@
             android:background="@color/colorPrimaryDark" />
 
         <ImageView
+            android:id="@+id/ic_restore"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/ic_baseline_restore_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintHeight_percent="0.15"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_black"
+            android:text="Restore"
+            android:textColor="@color/baemin"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="@id/ic_restore"
+            app:layout_constraintRight_toRightOf="@id/ic_restore"
+            app:layout_constraintTop_toBottomOf="@id/ic_restore" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/bg_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#838383"
+        app:layout_constraintBottom_toBottomOf="@id/bg_toolbar" />
+    <ImageView
+        android:id="@+id/ic_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+        app:layout_constraintBottom_toBottomOf="@id/bg_toolbar"
+        app:layout_constraintLeft_toLeftOf="@id/bg_toolbar"
+        app:layout_constraintTop_toTopOf="@id/bg_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

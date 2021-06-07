@@ -1,21 +1,16 @@
 package com.example.diaryapp.fragment
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.diaryapp.R
@@ -23,15 +18,13 @@ import com.example.diaryapp.Ultis.KEY_SPACE
 import com.example.diaryapp.Ultis.NEW_LINE
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
+import kotlinx.android.synthetic.main.fragment_backup_restore.*
 import kotlinx.android.synthetic.main.fragment_backup_restore.view.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
 import java.io.File
 import java.io.FileWriter
-import java.io.InputStreamReader
 
 
 class BackupRestoreFragment : Fragment() {
@@ -51,6 +44,9 @@ class BackupRestoreFragment : Fragment() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
+        ic_back.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         view.view_backup.setOnClickListener {
             if (checkPermission()) {
                 showDialog()
@@ -59,11 +55,19 @@ class BackupRestoreFragment : Fragment() {
             }
         }
         view.view_restore.setOnClickListener {
-            val listCSVFragment = ListCSVFragment()
-            listCSVFragment.show(childFragmentManager, "")
-//            openFile()
+            if (checkPermissionRead()) {
+                openCSVList()
+            } else {
+                requestStoragePermissionImport()
+            }
+
         }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun openCSVList() {
+        val listCSVFragment = ListCSVFragment()
+        listCSVFragment.show(childFragmentManager, "")
     }
 
     companion object {
@@ -115,15 +119,6 @@ class BackupRestoreFragment : Fragment() {
             try {
                 val fw = FileWriter(fileNameAndPath)
                 for (i in recordList) {
-//                    fw.append("" + recordList[i].id)
-//                    fw.append(",")
-//                    fw.append("" + recordList[i].dateTime)
-//                    fw.append(",")
-//                    fw.append("" + recordList[i].title)
-//                    fw.append(",")
-//                    fw.append("" + recordList[i].diaryText)
-//                    fw.append(",")
-
                     fw.append("${i.id}")
                     fw.append(KEY_SPACE)
                     fw.append(i.title?.replace("\n".toRegex(), NEW_LINE))
@@ -195,33 +190,20 @@ class BackupRestoreFragment : Fragment() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showDialog()
                 } else {
-                    Toast.makeText(requireContext(), "Permission denied....", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "Permission denied!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            STORAGE_REQUEST_CODE_IMPORT -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCSVList()
+                } else {
+                    Toast.makeText(requireContext(), "Permission denied!", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
         }
     }
-
-    private fun openFile() {
-        var intent = Intent(Intent(Intent.ACTION_GET_CONTENT))
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.type = "*/*"
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, "pickerInitialUri")
-        startActivityForResult(Intent.createChooser(intent, "Open CSV"), 756)
-    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        when (requestCode) {
-//            756 -> {
-//                if (resultCode == AppCompatActivity.RESULT_OK) {
-//                    data?.data.also {
-//                        importData(it!!)
-//                    }
-//                }
-//            }
-//        }
-//    }
 
 
 }

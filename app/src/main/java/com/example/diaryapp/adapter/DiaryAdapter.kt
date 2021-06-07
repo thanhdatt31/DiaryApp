@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.diaryapp.R
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DiaryAdapter : RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
     private var listDiary: ArrayList<Diary> = arrayListOf()
@@ -34,7 +36,11 @@ class DiaryAdapter : RecyclerView.Adapter<DiaryAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val diary: Diary = listDiary[position]
         holder.title.text = diary.title
-        holder.dateTime.text = diary.dateTime
+        val formatter = DateTimeFormatter.ofPattern("d M, yyyy", Locale.ENGLISH)
+        val date: LocalDate = LocalDate.parse(diary.dateTime, formatter)
+        val dateOfDiary =
+            date.dayOfMonth.toString() + "/" + date.monthValue + "/" + date.year
+        holder.dateTime.text = dateOfDiary
         holder.desc.text = diary.diaryText
         holder.itemView.setOnClickListener {
             listener!!.onClicked(diary)
