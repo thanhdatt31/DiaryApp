@@ -142,6 +142,10 @@ class HomeFragment : BaseFragment() {
                 val intent = Intent(requireContext(), SettingsActivity::class.java)
                 startActivity(intent)
             }
+            R.id.backup -> {
+                replaceFragment(BackupRestoreFragment.newInstance())
+
+            }
         }
         return super.onOptionsItemSelected(item)
     }
