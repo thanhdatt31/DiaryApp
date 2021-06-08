@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -34,6 +35,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var searchView: SearchView
     private var listDiary: ArrayList<Diary> = arrayListOf()
     private val diaryAdapter: DiaryAdapter = DiaryAdapter()
+    private var isClicked = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -145,6 +147,28 @@ class HomeFragment : BaseFragment() {
             }
             R.id.backup -> {
                 replaceFragment(BackupRestoreFragment.newInstance())
+
+            }
+            R.id.sort -> {
+                isClicked = when (isClicked) {
+                    false -> {
+                        listDiary.sortByDescending {
+                            SimpleDateFormat("d M,yyyy").parse(it.dateTime)
+                        }
+                        diaryAdapter.setData(listDiary)
+                        true
+                    }
+                    true -> {
+                        listDiary.sortByDescending {
+                            it.id
+                        }
+                        diaryAdapter.setData(listDiary)
+                        false
+                    }
+
+                }
+
+
 
             }
         }

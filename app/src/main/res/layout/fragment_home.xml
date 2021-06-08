@@ -34,7 +34,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/background_searchbox"
         android:queryHint="Search Diary"
-        android:iconifiedByDefault="true"
+        android:iconifiedByDefault="false"
         android:searchIcon="@drawable/ic_baseline_search_24"
         android:theme="@style/ThemeOverlay.search"
         app:layout_constraintEnd_toEndOf="parent"

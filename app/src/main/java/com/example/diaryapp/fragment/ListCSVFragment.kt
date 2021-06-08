@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.diaryapp.R
 import com.example.diaryapp.Ultis
+import com.example.diaryapp.Ultis.NEW_LINE
 import com.example.diaryapp.adapter.CSVAdapter
 import com.example.diaryapp.database.DiaryDatabase
 import com.example.diaryapp.model.Diary
@@ -71,7 +72,7 @@ class ListCSVFragment : BottomSheetDialogFragment() {
     private fun showDialog(uri: Uri) {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Alert")
-        builder.setMessage("Delele all data and restore data from ${getFileName(uri)} ?")
+        builder.setMessage("Delete all data and restore data from ${getFileName(uri)} ?")
 
         builder.setPositiveButton(android.R.string.ok) { dialog, which ->
            GlobalScope.launch {
@@ -97,8 +98,8 @@ class ListCSVFragment : BottomSheetDialogFragment() {
             while (line != null) {
                 val arr: List<String> = line.split(Ultis.KEY_SPACE)
                 if (arr.size < 5) {
-                    val titleDiary = arr[1]
-                    val contentDiary = arr[2]
+                    val titleDiary = arr[1].replace(NEW_LINE, "\n")
+                    val contentDiary = arr[2].replace(NEW_LINE, "\n")
                     val dateDiary = arr[3]
                     CoroutineScope(Dispatchers.IO).launch {
                         val diary = Diary()
@@ -112,7 +113,7 @@ class ListCSVFragment : BottomSheetDialogFragment() {
             }
             fileOutputStream?.close()
             reader.close()
-            Toast.makeText(requireContext(), "Restore successful....", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Restore successful", Toast.LENGTH_SHORT).show()
         } catch (e: java.lang.Exception) {
 
         }

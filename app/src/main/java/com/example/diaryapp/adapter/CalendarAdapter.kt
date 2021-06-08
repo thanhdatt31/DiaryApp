@@ -2,6 +2,7 @@ package com.example.diaryapp.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,9 +17,11 @@ import com.example.diaryapp.model.Diary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
     private var listCalendar: ArrayList<Calendar> = arrayListOf()
+    private var dateNow: LocalDate = LocalDate.now()
     var listener: OnItemClickListener? = null
     private lateinit var context: Context
     private var clickCount = 0
@@ -45,6 +48,9 @@ class CalendarAdapter : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
             holder.dayOfMonth.text = ""
         } else {
             holder.dayOfMonth.text = calendar.day.toString()
+            if (calendar.day == dateNow.dayOfMonth && calendar.month == dateNow.monthValue) {
+                holder.dayOfMonth.setTextColor(Color.parseColor("#46c9cc"))
+            }
             val date: String = calendar.day.toString() + " " + calendar.month + ", " + calendar.year
             GlobalScope.launch(Dispatchers.Main) {
                 val listDiaryByDate = DiaryDatabase.getDatabase(context).diaryDao()

@@ -16,5 +16,9 @@
             app:title="Set Up Your Pin" />
 
     </PreferenceCategory>
+<PreferenceCategory app:title="Sort">
 
+    <DropDownPreference app:title="Sort"
+        android:key="sort"/>
+</PreferenceCategory>
 </PreferenceScreen>
