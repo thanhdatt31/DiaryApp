@@ -16,9 +16,15 @@
             app:title="Set Up Your Pin" />
 
     </PreferenceCategory>
-<PreferenceCategory app:title="Sort">
+    <PreferenceCategory app:title="Start Day">
 
-    <DropDownPreference app:title="Sort"
-        android:key="sort"/>
-</PreferenceCategory>
+
+        <ListPreference
+            app:entries="@array/day_title"
+            app:entryValues="@array/day_title_values"
+            app:key="reply"
+            app:title="Choose Start Day"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

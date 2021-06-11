@@ -46,17 +46,18 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-
         recyclerView = recycler_view
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = diaryAdapter
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.IO) {
             val diary = DiaryDatabase.getDatabase(requireContext()).diaryDao().getAllDiary()
             diaryAdapter.setData(diary)
             listDiary = diary as ArrayList<Diary>
-            recyclerView.adapter = diaryAdapter
+            requireActivity().runOnUiThread {
+                recyclerView.adapter = diaryAdapter
+            }
         }
 
         diaryAdapter.setOnClickListener(onClicked)
@@ -138,8 +139,9 @@ class HomeFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.calendar -> {
-                val calendarFragment = CalendarFragment()
+                val calendarFragment = BottomSheetFragment()
                 calendarFragment.show(childFragmentManager, "")
+
             }
             R.id.setting -> {
                 val intent = Intent(requireContext(), SettingsActivity::class.java)
@@ -175,7 +177,7 @@ class HomeFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val date = intent?.getStringExtra("date")
             searchView.setQuery(date, false)

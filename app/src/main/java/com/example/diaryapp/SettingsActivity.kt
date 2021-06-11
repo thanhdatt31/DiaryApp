@@ -37,6 +37,18 @@ class SettingsActivity : AppCompatActivity() {
                 return@setOnPreferenceClickListener true
             }
 
+            val list: ListPreference = findPreference("reply")!!
+            list.setOnPreferenceChangeListener { preference, newValue ->
+                saveData(newValue)
+                true
+            }
+        }
+
+        private fun saveData(newValue: Any?) {
+            val pref = requireContext().getSharedPreferences("myPrefs", MODE_PRIVATE)
+            val editor = pref.edit()
+            editor.putString("dayStart", newValue as String?)
+            editor.apply()
         }
     }
 
